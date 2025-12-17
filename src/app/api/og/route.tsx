@@ -8,13 +8,18 @@ export async function GET(request: Request) {
     
     const query = searchParams.get('query')?.slice(0, 30) || 'РЕЄСТР ДОЛІ';
     const resCode = searchParams.get('res') || 'idle'; 
+    let fontData;
 
-    const fontData = await fetch(
-      new URL('https://github.com/google/fonts/raw/main/ofl/oswald/Oswald%5Bwght%5D.ttf')
-    ).then((res) => {
-      if (!res.ok) throw new Error('Font load failed');
-      return res.arrayBuffer();
-    });
+    try {
+      const fontUrl = new URL('../../../../public/fonts/Oswald-Bold.ttf', import.meta.url);
+      fontData = await fetch(fontUrl).then(res => res.arrayBuffer());
+    } catch (e) {
+      console.warn("Локальний шрифт не знайдено, завантажую з мережі...");
+      // 2. Резервний варіант (GitHub CDN), якщо локальний файл недоступний
+      fontData = await fetch(
+        new URL('https://raw.githubusercontent.com/google/fonts/main/ofl/oswald/static/Oswald-Bold.ttf')
+      ).then(res => res.arrayBuffer());
+    }
 
     let bg = '#1e293b'; 
     let text = 'white';
