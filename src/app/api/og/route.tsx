@@ -10,8 +10,11 @@ export async function GET(request: Request) {
     const resCode = searchParams.get('res') || 'idle'; 
 
     const fontData = await fetch(
-      new URL('https://fonts.gstatic.com/s/oswald/v49/TK3iWkUHHAIjg75oxSD03E0.ttf', import.meta.url)
-    ).then((res) => res.arrayBuffer());
+      new URL('https://github.com/google/fonts/raw/main/ofl/oswald/Oswald%5Bwght%5D.ttf')
+    ).then((res) => {
+      if (!res.ok) throw new Error('Font load failed');
+      return res.arrayBuffer();
+    });
 
     let bg = '#1e293b'; 
     let text = 'white';
