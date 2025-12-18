@@ -18,35 +18,40 @@ export async function GET(request: Request) {
       ).then(res => res.arrayBuffer());
     }
 
-    let bg = 'linear-gradient(to bottom right, #1e293b, #0f172a)';
-    let borderColor = '#334155';
+    let bg = '#0f172a';
+    let textColor = 'white';
+    let accentColor = '#94a3b8';
     let status = 'ДЕРЖАВНИЙ РЕЄСТР';
     let emoji = '🇺🇦';
-    let textColor = 'white';
-
+    
     if (resCode === '0') {
-        bg = 'linear-gradient(to bottom right, #facc15, #ca8a04)'; 
-        borderColor = '#fde047';
-        status = 'ПЕРЕМОГА'; emoji = '🟡'; color: 'black';
+        bg = '#EAB308';
+        textColor = '#000000';
+        accentColor = '#713f12';
+        status = 'ПЕРЕМОГА'; 
+        emoji = '⚡️'; 
     }
     if (resCode === '1') {
-        bg = 'linear-gradient(to bottom right, #dc2626, #b91c1c)'; 
-        borderColor = '#fca5a5';
-        status = 'ЗРАДА'; emoji = '🔴';
+        bg = '#DC2626';
+        textColor = '#FFFFFF';
+        accentColor = '#7f1d1d';
+        status = 'ЗРАДА'; 
+        emoji = '💔';
     }
     if (resCode === '2') {
-        bg = 'linear-gradient(to bottom right, #fde047, #eab308, #a16207)'; 
-        borderColor = '#ffffff';
-        status = 'ТОТАЛЬНА ПЕРЕМОГА'; emoji = '🌟'; 
-        textColor = 'black';
+        bg = '#000000';
+        textColor = '#FACC15';
+        accentColor = '#FFFFFF';
+        status = 'ТОТАЛЬНА ПЕРЕМОГА'; 
+        emoji = '🚀'; 
     }
     if (resCode === '3') {
-        bg = 'linear-gradient(to bottom right, #ef4444, #991b1b, #450a0a)'; 
-        borderColor = '#000000';
-        status = 'ТОТАЛЬНА ЗРАДА'; emoji = '💀';
+        bg = '#000000';
+        textColor = '#F87171';
+        accentColor = '#FFFFFF';
+        status = 'ТОТАЛЬНА ЗРАДА'; 
+        emoji = '💀';
     }
-
-    const fontSize = query.length > 12 ? 100 : query.length > 7 ? 130 : 160;
 
     return new ImageResponse(
       (
@@ -54,51 +59,69 @@ export async function GET(request: Request) {
           height: '100%',
           width: '100%',
           display: 'flex',
-          padding: '20px',
-          background: bg,
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: bg,
           fontFamily: '"Oswald"',
+          position: 'relative',
+          overflow: 'hidden',
         }}>
+          
+          <div style={{
+            position: 'absolute',
+            fontSize: 500,
+            opacity: 0.07,
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            pointerEvents: 'none',
+          }}>
+            {emoji}
+          </div>
+
           <div style={{
             display: 'flex',
-            flex: 1,
             flexDirection: 'column',
             alignItems: 'center',
-            justifyContent: 'center',
-            border: `8px solid ${borderColor}`,
-            borderRadius: '20px',
-            color: textColor,
-            textAlign: 'center',
+            zIndex: 10,
             padding: '40px',
-            boxShadow: 'inset 0 0 40px rgba(0,0,0,0.2)'
+            textAlign: 'center',
           }}>
-            {/* Статус */}
+            
             <div style={{ 
                 display: 'flex', 
-                fontSize: 36, 
-                opacity: 0.9, 
-                marginBottom: 30, 
-                letterSpacing: '6px',
+                backgroundColor: textColor === '#000000' ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.1)',
+                padding: '10px 30px',
+                borderRadius: '50px',
+                fontSize: 30, 
                 fontWeight: 700,
-                textShadow: '0 2px 4px rgba(0,0,0,0.2)'
+                color: textColor,
+                marginBottom: 20,
+                letterSpacing: '4px',
             }}>
-              {status} {emoji}
+              {status}
             </div>
 
-            {/* Головне слово */}
             <div style={{ 
               display: 'flex', 
-              fontSize: fontSize, 
-              fontWeight: 900, 
+              fontSize: query.length > 10 ? 110 : 160, 
+              color: textColor,
+              fontWeight: 700, 
               lineHeight: 0.9,
-              marginBottom: 40,
-              textShadow: '0 4px 8px rgba(0,0,0,0.3)',
-              wordBreak: 'break-word'
+              marginBottom: 10,
+              textTransform: 'uppercase',
             }}>
               {query}
             </div>
 
-            {/* Футер */}
-            <div style={{ display: 'flex', marginTop: 'auto', opacity: 0.6, fontSize: 24, letterSpacing: '2px' }}>
+            <div style={{ 
+              marginTop: 30,
+              color: textColor,
+              opacity: 0.6, 
+              fontSize: 24, 
+              letterSpacing: '2px' 
+            }}>
                zp.minecanton209.pp.ua
             </div>
           </div>
