@@ -1,0 +1,31 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DIRECT_URL")
+}
+
+model Profile {
+  id         String    @id @default(uuid())
+  telegramId BigInt?   @unique
+  username   String?
+  avatarUrl  String?
+  createdAt  DateTime  @default(now())
+  history    History[]
+
+  @@map("profiles")
+}
+
+model History {
+  id         BigInt   @id @default(autoincrement())
+  query      String
+  resultCode Int
+  createdAt  DateTime @default(now())
+  profile    Profile? @relation(fields: [profileId], references: [id])
+  profileId  String?
+
+  @@index([createdAt])
+  @@map("history")
+}
