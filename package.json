@@ -1,14 +1,19 @@
 {
   "name": "zrada-peremoga",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "db:push": "cross-env DATABASE_URL=%DIRECT_URL% npx prisma db push",
+    "db:migrate": "cross-env DATABASE_URL=$DIRECT_URL npx prisma migrate deploy",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.88.0",
+    "@tremor/react": "^3.18.7",
     "@upstash/redis": "^1.35.8",
     "canvas-confetti": "^1.9.4",
     "clsx": "^2.1.1",
@@ -23,14 +28,17 @@
     "tailwind-merge": "^3.4.0"
   },
   "devDependencies": {
+    "@prisma/client": "^6.19.1",
     "@tailwindcss/postcss": "^4",
     "@types/canvas-confetti": "^1.9.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "babel-plugin-react-compiler": "1.0.0",
+    "cross-env": "^10.1.0",
     "eslint": "^9",
     "eslint-config-next": "16.0.10",
+    "prisma": "^6.19.1",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
